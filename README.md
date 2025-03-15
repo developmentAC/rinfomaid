@@ -73,7 +73,15 @@ tokio = { version = "1", features = ["full"] }
    cargo add clap colored ollama_rs tokio
    ```
 
-3. **Build the Project**:
+3. ### Set Up Local Models for Ollama
+
+   The below commands will install the models that Ollama will require to perform its functions. Note, a typical model for Ollama is about 4 GB in size. As there are manty diofferent models that you can experiment with at [https://ollama.com/search](https://ollama.com/search).
+
+   ``` bash
+   ollama pull mistral
+   ```
+
+4. **Build the Project**:
 
    To build the project, run the following:
 
@@ -81,13 +89,14 @@ tokio = { version = "1", features = ["full"] }
    cargo build
    ```
 
-4. **Run the Program**:
+5. **Run the Program**:
 
    You can run the program using the following command:
 
    ```bash
-   cargo run
+   cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
    ```
+_Note: the explainations for these options are provided below._
 
 ## Usage
 
@@ -123,7 +132,7 @@ This will read the prompt from the file `prompt.txt`, generate a response, and s
 You can specify the model to use for generation with the `-m` argument. If not specified, it defaults to `mistral`:
 
 ```bash
-cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "gpt-3"
+cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
 ```
 
 ## Explanation of Code
