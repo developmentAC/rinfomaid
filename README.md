@@ -73,9 +73,9 @@ tokio = { version = "1", features = ["full"] }
    cargo add clap colored ollama_rs tokio
    ```
 
-3. ### Set Up Local Models for Ollama
+3. ### Set Up Ollama and its Local Models
 
-   The below commands will install the models that Ollama will require to perform its functions. Note, a typical model for Ollama is about 4 GB in size. As there are manty diofferent models that you can experiment with at [https://ollama.com/search](https://ollama.com/search).
+   Ollama may be downloaded from [https://ollama.com/](https://ollama.com/). The below commands will install the models that Ollama will require to perform its functions. Note, a typical model for Ollama is about 4 GB in size. As there are manty diofferent models that you can experiment with at [https://ollama.com/search](https://ollama.com/search).
 
    ``` bash
    ollama pull mistral
