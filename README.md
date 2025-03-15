@@ -106,7 +106,7 @@ If you want to provide a prompt directly from the command line, use the `-p` arg
 cargo run -- -p "What is the capital of Pennsylvania?" -m mistral -o output.md
 ```
 
-This will generate text based on the provided prompt and save the result to `output.md`.
+This will generate text based on the provided prompt and save the result in markdown formatting to a created output directory, `0_out/output.md`.
 
 ### Run with Prompt File
 
