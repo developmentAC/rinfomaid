@@ -11,7 +11,7 @@ Email: obonhamcarter at allegheny.edu
 [![MIT Licence](https://img.shields.io/bower/l/bootstrap)](https://opensource.org/licenses/MIT)
 
 
-The **RinfoMaid** is a Rust command-line tool that interacts with the Ollama API to generate text using AI models. The program can either take a prompt from the command line, a prompt file, or ask the user to enter a prompt. It then sends the prompt to the Ollama API and retrieves a generated response, which is saved to a specified output file in markdown format. Cool, right?
+The **RinfoMaid** is a Rust command-line tool that interacts with the Ollama API to generate text using AI models. The program can either take a prompt from the command line, a prompt file, or ask the user to enter a prompt. It then sends the prompt to the Ollama API and retrieves a generated response, which is saved to a specified output file in markdown format. This project is a learning tool for programming in Rust. Cool, right?
 
 ## Table of Contents
 
