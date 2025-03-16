@@ -18,6 +18,7 @@ The **RinfoMaid** is a Rust command-line tool that interacts with the Ollama API
 - [Rinfomaid:  A textual AI application written in Rust](#rinfomaid--a-textual-ai-application-written-in-rust)
   - [Table of Contents](#table-of-contents)
   - [Dependencies](#dependencies)
+  - [Rust Compiler Version](#rust-compiler-version)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Run with Prompt](#run-with-prompt)
@@ -55,6 +56,10 @@ tokio = {version = "1.44.1" ,features = ["full"]}
 toml = "0.8.20"
 serde = "1.0.219"
 ```
+
+## Rust Compiler Version
+
+This code was compiled using the Rustc version `1.85.0 (4d91de4e4 2025-02-17)`, with Cargo version `1.85.0 (d73d2caf9 2024-12-31)`.
 
 ## Installation
 
