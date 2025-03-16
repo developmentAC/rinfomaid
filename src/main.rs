@@ -168,7 +168,7 @@ async fn handle_success(response: String, output_file: &str, prompt: &str) {
 
 /// Handle the failure case: print an error message
 fn handle_failure() {
-    let error_msg = format!("\t Oh no, an error...\n\t Failed to generate response.\n\t Is the Ollama server running? \n\t Check that model has been pulled already?").bright_red().bold();
+    let error_msg = format!("\n\t Oh no, an error...\n\t Failed to generate response.\n\t Is the Ollama server running? \n\t Check that model has been pulled already?").bright_red().bold();
 
     eprintln!("{}", error_msg);
 }
