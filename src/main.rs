@@ -7,19 +7,20 @@ use std::io::{self, Write};
 
 mod toml_extract; // Extract and print the version information according to the toml file
 
-
 fn show_banner() {
     // banner ref: https://manytools.org/hacker-tools/ascii-banner/
 
     //logo design: "ticks", use "█" to replace "/\" chars, "_" replaced with space
-    let banner = String::from("
+    let banner = String::from(
+        "
 \t ██████╗ ██╗███╗   ██╗███████╗ ██████╗ ███╗   ███╗ █████╗ ██╗██████╗ 
 \t ██╔══██╗██║████╗  ██║██╔════╝██╔═══██╗████╗ ████║██╔══██╗██║██╔══██╗
 \t ██████╔╝██║██╔██╗ ██║█████╗  ██║   ██║██╔████╔██║███████║██║██║  ██║
 \t ██╔══██╗██║██║╚██╗██║██╔══╝  ██║   ██║██║╚██╔╝██║██╔══██║██║██║  ██║
 \t ██║  ██║██║██║ ╚████║██║     ╚██████╔╝██║ ╚═╝ ██║██║  ██║██║██████╔╝
 \t ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ 
-");
+",
+    );
 
     colour_print(&banner, "purple")
 }
@@ -34,7 +35,7 @@ async fn main() {
     show_banner();
 
     // Display version information from the toml file
-    toml_extract::main(); 
+    toml_extract::main();
 
     // Parse the command-line arguments
     let matches = parse_arguments();
@@ -48,12 +49,14 @@ async fn main() {
     // Retrieve the output file path
     let output_file = matches.get_one::<String>("output").unwrap();
 
-// update the output file path with the output directory
+    // update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
     let msg = format!("Output filepath ").bright_yellow();
-    println!("\t {}: {}", msg, output_file_with_path.bright_green().bold());
-
-
+    println!(
+        "\t {}: {}",
+        msg,
+        output_file_with_path.bright_green().bold()
+    );
 
     // Connect to Ollama API
     let ollama = Ollama::new("http://localhost".to_string(), 11434);
@@ -118,11 +121,11 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
         // Prompt the user for input if none is provided
         let my_message = format!("\t Enter the prompt : ");
         let my_prompt: String = get_input(&my_message).expect("\t Failed to receive the value...");
-        
+
         // println!("\t Prompt set: {}", my_prompt.bright_green().bold());
         // let msg = format!("Prompt set: ").bright_yellow();
         // println!("\t {}: {}", msg, my_prompt.bright_green().bold());
-    
+
         colour_print("\t Prompt is set", "cyan");
         my_prompt
     }
@@ -136,11 +139,11 @@ async fn generate_response(ollama: &Ollama, model: &str, prompt: &str) -> Result
     // Convert model and prompt to String explicitly
     let model_string = model.to_string();
     let prompt_string = prompt.to_string();
-    
+
     let res = ollama
         .generate(GenerationRequest::new(model_string, prompt_string))
         .await;
-    
+
     match res {
         Ok(res) => Ok(res.response),
         Err(_) => Err(String::from("Failed to generate response")),
@@ -159,15 +162,15 @@ async fn handle_success(response: String, output_file: &str, prompt: &str) {
     writeln!(file, "## Prompt\n\n{}", prompt).unwrap();
     writeln!(file, "## Response\n\n{}", response).unwrap();
 
-    let msg = format!("Response saved to file: ").bright_yellow();
+    let msg = format!("Response saved to file: ").bright_yellow().bold();
     println!("\t {}: {}", msg, output_file.bright_green().bold());
 }
 
 /// Handle the failure case: print an error message
 fn handle_failure() {
-    eprintln!(
-        "\t Oh no. Failed to generate response. Is the server running? Check that model has been pulled already?"
-    );
+    let error_msg = format!("\t Oh no, an error...\n\t Failed to generate response.\n\t Is the Ollama server running? \n\t Check that model has been pulled already?").bright_red().bold();
+
+    eprintln!("{}", error_msg);
 }
 
 /// Get input from the user
@@ -230,7 +233,6 @@ fn colour_print(text: &str, colour: &str) {
         }
     }
 }
-
 
 // run command: cargo run -- -p "Why is the sky blue?" -m mistral -o output.md
 // cargo run -- --prompt "What is the capital of France?" --prompt-file "prompt.txt" --output "result.md" --model "mistral"
