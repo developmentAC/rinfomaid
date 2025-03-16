@@ -50,7 +50,7 @@ async fn main() {
 
 // update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
-    let msg = format!("Output filepath: ").bright_yellow();
+    let msg = format!("Output filepath ").bright_yellow();
     println!("\t {}: {}", msg, output_file_with_path.bright_green().bold());
 
 
@@ -100,7 +100,7 @@ fn parse_arguments() -> clap::ArgMatches {
             Arg::new("model")
                 .short('m')
                 .long("model")
-                .required(true)
+                .required(false)
                 .default_value("mistral")
                 .help("The model to use for generation."),
         )
@@ -123,14 +123,14 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
         // let msg = format!("Prompt set: ").bright_yellow();
         // println!("\t {}: {}", msg, my_prompt.bright_green().bold());
     
-        colour_print("\t Prompt set", "cyan");
+        colour_print("\t Prompt is set", "cyan");
         my_prompt
     }
 }
 
 // Asynchronously generate a response from the Ollama AI model
 async fn generate_response(ollama: &Ollama, model: &str, prompt: &str) -> Result<String, String> {
-    let msg = format!("Prompt: ").bright_yellow();
+    let msg = format!("Prompt ").bright_yellow();
     println!("\t {}: {}", msg, prompt.bright_green().bold());
 
     // Convert model and prompt to String explicitly
@@ -149,6 +149,7 @@ async fn generate_response(ollama: &Ollama, model: &str, prompt: &str) -> Result
 
 // Handle the success case: save the response to a file
 async fn handle_success(response: String, output_file: &str, prompt: &str) {
+    colour_print("Response:", "yellow");
     colour_print(&response, "cyan");
 
     let mut file = File::create(output_file)
