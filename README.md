@@ -1,4 +1,4 @@
-# Rinfomaid:  A Textual AI Application written in Rust
+# Rinfomaid:  A textual AI application written in Rust
 
 ![logo](graphics/rinfomaid_logo.png)
 
@@ -15,7 +15,7 @@ The **RinfoMaid** is a Rust command-line tool that interacts with the Ollama API
 
 ## Table of Contents
 
-- [Rinfomaid:  A Textual AI Application written in Rust](#rinfomaid--a-textual-ai-application-written-in-rust)
+- [Rinfomaid:  A textual AI application written in Rust](#rinfomaid--a-textual-ai-application-written-in-rust)
   - [Table of Contents](#table-of-contents)
   - [Dependencies](#dependencies)
   - [Installation](#installation)
