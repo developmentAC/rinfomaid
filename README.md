@@ -48,10 +48,12 @@ Add the following dependencies to your `Cargo.toml` file under `[dependencies]`:
 
 ```toml
 [dependencies]
-clap = "4.1.0"
-colored = "2.0"
-ollama_rs = "0.1.0"
-tokio = { version = "1", features = ["full"] }
+colored = "3.0.0"
+clap = "4.5.32"
+ollama-rs = "0.2.6"
+tokio = {version = "1.44.1" ,features = ["full"]}
+toml = "0.8.20"
+serde = "1.0.219"
 ```
 
 ## Installation
