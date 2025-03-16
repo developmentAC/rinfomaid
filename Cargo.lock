@@ -895,8 +895,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_ollama3"
-version = "1.0.0"
+name = "rinfomaid"
+version = "1.1.0"
 dependencies = [
  "clap",
  "colored",

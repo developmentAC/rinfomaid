@@ -1,6 +1,6 @@
 [package]
-name = "rust_ollama3"
-version = "1.0.0"
+name = "rinfomaid"
+version = "1.1.0"
 edition = "2024"
 
 [dependencies]
