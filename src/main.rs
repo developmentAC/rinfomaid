@@ -50,7 +50,7 @@ async fn main() {
 
 // update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
-    let msg = format!("output filepath: ").bright_yellow();
+    let msg = format!("Output filepath: ").bright_yellow();
     println!("\t {}: {}", msg, output_file_with_path.bright_green().bold());
 
 
