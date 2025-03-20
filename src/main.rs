@@ -18,7 +18,7 @@ fn show_banner() {
 \t ██████╔╝██║██╔██╗ ██║█████╗  ██║   ██║██╔████╔██║███████║██║██║  ██║
 \t ██╔══██╗██║██║╚██╗██║██╔══╝  ██║   ██║██║╚██╔╝██║██╔══██║██║██║  ██║
 \t ██║  ██║██║██║ ╚████║██║     ╚██████╔╝██║ ╚═╝ ██║██║  ██║██║██████╔╝
-\t ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═════╝ 
+\t ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═════╝ 
 ",
     );
 
@@ -36,6 +36,11 @@ async fn main() {
 
     // Display version information from the toml file
     toml_extract::main();
+
+    // print up help message
+    let msg = format!("Welcome to Ollama Textual AI Generator!");
+    println!("\t {}", msg.bright_yellow().bold());
+
 
     // Parse the command-line arguments
     let matches = parse_arguments();
@@ -74,10 +79,18 @@ async fn main() {
 
 /// Parse the command-line arguments
 fn parse_arguments() -> clap::ArgMatches {
+
+    // print up help message
+    let msg = format!("\t Sample Command:\n\t cargo run -- --prompt \"What is the capital of France?\" --output \"result.md\" --model \"llama3.2\"\n\n\t Or if you have a file containing the prompt\n\n\t Sample Command:\n\t cargo run --  --prompt-file \"prompt.txt\" --output \"result.md\" --model \"llama3.2\"");
+
+    // Define the command-line interface using clap
+
     Command::new("Ollama Generator")
         .version("1.0")
         .author("Your Name <you@example.com>")
-        .about("Generates text using Ollama AI models")
+        // .about("Generates text using Ollama AI models")
+        .about(msg)
+        .arg_required_else_help(true)
         .arg(
             Arg::new("prompt")
                 .short('p')
@@ -110,7 +123,7 @@ fn parse_arguments() -> clap::ArgMatches {
         .get_matches()
 }
 
-/// Retrieve the prompt from either the command line, file, or user input
+// Retrieve the prompt from either the command line, file, or user input
 fn get_prompt(matches: &clap::ArgMatches) -> String {
     if let Some(prompt) = matches.get_one::<String>("prompt") {
         prompt.to_string()
@@ -122,6 +135,7 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
         let my_message = format!("\t Enter the prompt : ");
         let my_prompt: String = get_input(&my_message).expect("\t Failed to receive the value...");
 
+        // It may not be necessary to print the prompt again ...
         // println!("\t Prompt set: {}", my_prompt.bright_green().bold());
         // let msg = format!("Prompt set: ").bright_yellow();
         // println!("\t {}: {}", msg, my_prompt.bright_green().bold());
@@ -235,4 +249,4 @@ fn colour_print(text: &str, colour: &str) {
 }
 
 // run command: cargo run -- -p "Why is the sky blue?" -m mistral -o output.md
-// cargo run -- --prompt "What is the capital of France?" --prompt-file "prompt.txt" --output "result.md" --model "mistral"
+// cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
