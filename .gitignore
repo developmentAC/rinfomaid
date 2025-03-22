@@ -7,6 +7,7 @@
 ################
 target/
 0_out/
+promptfiles/
 
 # bash #
 ########
