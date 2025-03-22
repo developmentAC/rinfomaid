@@ -7,6 +7,7 @@ use std::io::{self, Write};
 
 mod toml_extract; // Extract and print the version information according to the toml file
 
+// Function to display the banner
 fn show_banner() {
     // banner ref: https://manytools.org/hacker-tools/ascii-banner/
 
@@ -22,6 +23,7 @@ fn show_banner() {
 ",
     );
 
+    // Print the banner in purple color
     colour_print(&banner, "purple")
 }
 
@@ -31,13 +33,13 @@ async fn main() {
     let output_dir = "0_out";
     let _ = create_dir_all(output_dir);
 
-    // show the banner
+    // Show the banner
     show_banner();
 
     // Display version information from the toml file
     toml_extract::main();
 
-    // print up help message
+    // Print a welcome message and quick help instruction
     let msg = format!(
         "Welcome to Ollama Textual AI Generator!\n\t Use: \"cargo run -- --bighelp\" for quick help."
     );
@@ -52,9 +54,10 @@ async fn main() {
     // Parse the command-line arguments
     let matches = parse_arguments();
 
-    // // Retrieve the Big Help message
+    // Retrieve the Big Help message flag
     let big_help = matches.get_flag("bighelp");
 
+    // If big_help is requested, display the help message and exit
     if big_help {
         get_big_help();
         return;
@@ -76,7 +79,7 @@ async fn main() {
         .parse()
         .expect("Invalid number of results");
 
-    // update the output file path with the output directory
+    // Update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
     let msg = format!("Output filepath ").bright_yellow().bold();
     println!(
@@ -98,7 +101,7 @@ async fn main() {
     }
 }
 
-// print out the help message
+// Print out the help message
 fn get_big_help() {
     let msg = format!("\n\t cargo run -- --prompt \"What is the capital of France?\"  --output \"result.md\"  --model \"llama3.2\"  --num-results 2").bright_cyan().bold();
     println!("{}", msg);
@@ -145,8 +148,7 @@ fn parse_arguments() -> clap::ArgMatches {
                 .short('m')
                 .long("model")
                 .required(false)
-                // change the default model to "llama3.2" or whatever model you want
-                // .default_value("mistral")
+                // Change the default model to "llama3.2" or whatever model you want
                 .default_value("llama3.2")
                 .help("The model to use for generation."),
         )
@@ -173,11 +175,7 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
         let my_message = format!("\t Enter the prompt : ");
         let my_prompt: String = get_input(&my_message).expect("\t Failed to receive the value...");
 
-        // It may not be necessary to print the prompt again ...
-        // println!("\t Prompt set: {}", my_prompt.bright_green().bold());
-        // let msg = format!("Prompt set: ").bright_yellow().bold();
-        // println!("\t {}: {}", msg, my_prompt.bright_green().bold());
-
+        // Print a message indicating that the prompt is set
         colour_print("\t Prompt is set", "cyan");
         my_prompt
     }
@@ -217,21 +215,26 @@ async fn generate_response(
 
 // Handle the success case: save the response to a file
 async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str, model: &str) {
+    // Print the responses in yellow color
     colour_print("\t Responses:", "yellow");
 
+    // Create the output file
     let mut file = File::create(output_file)
         .unwrap_or_else(|_| panic!("Failed to create file {}", output_file));
 
+    // Write the results to the file
     writeln!(file, "# Ollama Generation Result\n").unwrap();
     writeln!(file, "## Model: {}\n", model).unwrap();
     writeln!(file, "## Prompt\n\n{}", prompt).unwrap();
 
+    // Write each response to the file
     for (i, response) in responses.iter().enumerate() {
         let msg = format!("\t   {}", response);
         colour_print(&msg, "cyan");
         writeln!(file, "## Response {}\n\n{}", i + 1, response).unwrap();
     }
 
+    // Print a message indicating that the responses are saved to the file
     let msg = format!("Responses saved to file: ").bright_yellow().bold();
     println!("\t {}: {}", msg, output_file.bright_green().bold());
 }
