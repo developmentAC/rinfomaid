@@ -158,7 +158,8 @@ cargo run -- --prompt "What is the capital of France?" --output "result.md" --mo
      - `prompt_file`: A file containing the prompt.
      - `output`: The file where the result will be saved.
      - `model`: The AI model to use for text generation.
-
+       - If the `output` argument is not provided, the program will display an error message and exit.
+     - num_results is an optional argument that specifies the number of results to generate. If not provided, it defaults to 1.
 2. **Input Prompt**:
    - The program checks if the user has provided a prompt via the `-p` or `-f` argument. If neither is provided, the program prompts the user to enter a prompt interactively.
 

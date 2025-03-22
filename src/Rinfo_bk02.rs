@@ -41,6 +41,7 @@ async fn main() {
     let msg = format!("Welcome to Ollama Textual AI Generator!");
     println!("\t {}", msg.bright_yellow().bold());
 
+
     // Parse the command-line arguments
     let matches = parse_arguments();
 
@@ -52,13 +53,6 @@ async fn main() {
 
     // Retrieve the output file path
     let output_file = matches.get_one::<String>("output").unwrap();
-
-    // Retrieve the number of results
-    let num_results: usize = matches
-        .get_one::<String>("num_results")
-        .unwrap()
-        .parse()
-        .expect("Invalid number of results");
 
     // update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
@@ -73,21 +67,29 @@ async fn main() {
     let ollama = Ollama::new("http://localhost".to_string(), 11434);
 
     // Generate response from Ollama AI model
-    let res = generate_response(&ollama, &model, &prompt, num_results).await;
+    let res = generate_response(&ollama, &model, &prompt).await;
 
     // Process the result
     match res {
-        Ok(response) => handle_success(response, &output_file_with_path, &prompt, &model).await,
+        // Ok(response) => handle_success(response, output_file, &prompt).await,
+        Ok(response) => handle_success(response, &output_file_with_path, &prompt).await,
         Err(_) => handle_failure(),
     }
 }
 
 /// Parse the command-line arguments
 fn parse_arguments() -> clap::ArgMatches {
+
+    // print up help message
+    let msg = format!("\t Sample Command:\n\t cargo run -- --prompt \"What is the capital of France?\" --output \"result.md\" --model \"llama3.2\"\n\n\t Or if you have a file containing the prompt\n\n\t Sample Command:\n\t cargo run --  --prompt-file \"prompt.txt\" --output \"result.md\" --model \"llama3.2\"");
+
+    // Define the command-line interface using clap
+
     Command::new("Ollama Generator")
         .version("1.0")
         .author("Your Name <you@example.com>")
-        .about("Generates text using Ollama AI models")
+        // .about("Generates text using Ollama AI models")
+        .about(msg)
         .arg_required_else_help(true)
         .arg(
             Arg::new("prompt")
@@ -115,19 +117,8 @@ fn parse_arguments() -> clap::ArgMatches {
                 .short('m')
                 .long("model")
                 .required(false)
-
-// change the default model to "llama3.2" or whatever model you want
-                // .default_value("mistral")
-                .default_value("llama3.2")
-                .help("The model to use for generation. Default model is llama3.2."),
-        )
-        .arg(
-            Arg::new("num_results")
-                .short('n')
-                .long("num-results")
-                .required(false)
-                .default_value("1")
-                .help("The number of results to generate."),
+                .default_value("mistral")
+                .help("The model to use for generation."),
         )
         .get_matches()
 }
@@ -155,12 +146,7 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
 }
 
 // Asynchronously generate a response from the Ollama AI model
-async fn generate_response(
-    ollama: &Ollama,
-    model: &str,
-    prompt: &str,
-    num_results: usize,
-) -> Result<Vec<String>, String> {
+async fn generate_response(ollama: &Ollama, model: &str, prompt: &str) -> Result<String, String> {
     let msg = format!("Prompt ").bright_yellow();
     println!("\t {}: {}", msg, prompt.bright_green().bold());
 
@@ -168,41 +154,29 @@ async fn generate_response(
     let model_string = model.to_string();
     let prompt_string = prompt.to_string();
 
-    let mut results = Vec::new();
-    for _ in 0..num_results {
-        let res = ollama
-            .generate(GenerationRequest::new(
-                model_string.clone(),
-                prompt_string.clone(),
-            ))
-            .await;
+    let res = ollama
+        .generate(GenerationRequest::new(model_string, prompt_string))
+        .await;
 
-        match res {
-            Ok(res) => results.push(res.response),
-            Err(_) => return Err(String::from("Failed to generate response")),
-        }
+    match res {
+        Ok(res) => Ok(res.response),
+        Err(_) => Err(String::from("Failed to generate response")),
     }
-
-    Ok(results)
 }
 
 // Handle the success case: save the response to a file
-async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str, model: &str) {
-    colour_print("Responses:", "yellow");
+async fn handle_success(response: String, output_file: &str, prompt: &str) {
+    colour_print("Response:", "yellow");
+    colour_print(&response, "cyan");
 
     let mut file = File::create(output_file)
         .unwrap_or_else(|_| panic!("Failed to create file {}", output_file));
 
     writeln!(file, "# Ollama Generation Result\n").unwrap();
-    writeln!(file, "## Model: {}\n",model).unwrap();
     writeln!(file, "## Prompt\n\n{}", prompt).unwrap();
+    writeln!(file, "## Response\n\n{}", response).unwrap();
 
-    for (i, response) in responses.iter().enumerate() {
-        colour_print(&response, "cyan");
-        writeln!(file, "## Response {}\n\n{}", i + 1, response).unwrap();
-    }
-
-    let msg = format!("Responses saved to file: ").bright_yellow().bold();
+    let msg = format!("Response saved to file: ").bright_yellow().bold();
     println!("\t {}: {}", msg, output_file.bright_green().bold());
 }
 
@@ -274,6 +248,5 @@ fn colour_print(text: &str, colour: &str) {
     }
 }
 
-// Sample run Commands:
-// cargo run -- -p "Why is the sky blue?" -m mistral -o output.md --num_results 2
-// cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral" --num_results 1
+// run command: cargo run -- -p "Why is the sky blue?" -m mistral -o output.md
+// cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
