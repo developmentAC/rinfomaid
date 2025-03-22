@@ -227,7 +227,7 @@ async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str,
     writeln!(file, "## Prompt\n\n{}", prompt).unwrap();
 
     for (i, response) in responses.iter().enumerate() {
-        let msg = format!("\t   {}",response);
+        let msg = format!("\t   {}", response);
         colour_print(&msg, "cyan");
         writeln!(file, "## Response {}\n\n{}", i + 1, response).unwrap();
     }
