@@ -38,11 +38,27 @@ async fn main() {
     toml_extract::main();
 
     // print up help message
-    let msg = format!("Welcome to Ollama Textual AI Generator!");
+    let msg = format!(
+        "Welcome to Ollama Textual AI Generator!\n\t Use: \"cargo run -- --bighelp\" for quick help."
+    );
     println!("\t {}", msg.bright_yellow().bold());
+    println!(
+        "\t {}",
+        "-------------------------------------------------\n"
+            .bright_yellow()
+            .bold()
+    );
 
     // Parse the command-line arguments
     let matches = parse_arguments();
+
+    // // Retrieve the Big Help message
+    let big_help = matches.get_flag("bighelp");
+
+    if big_help {
+        get_big_help();
+        return;
+    }
 
     // Retrieve the prompt input
     let prompt = get_prompt(&matches);
@@ -62,7 +78,7 @@ async fn main() {
 
     // update the output file path with the output directory
     let output_file_with_path = format!("{}/{}", output_dir, output_file);
-    let msg = format!("Output filepath ").bright_yellow();
+    let msg = format!("Output filepath ").bright_yellow().bold();
     println!(
         "\t {}: {}",
         msg,
@@ -82,13 +98,26 @@ async fn main() {
     }
 }
 
+// print out the help message
+fn get_big_help() {
+    let msg = format!("\n\t cargo run -- --prompt \"What is the capital of France?\"  --output \"result.md\"  --model \"llama3.2\"  --num-results 2").bright_cyan().bold();
+    println!("{}", msg);
+}
+
 /// Parse the command-line arguments
 fn parse_arguments() -> clap::ArgMatches {
     Command::new("Ollama Generator")
         .version("1.0")
-        .author("Your Name <you@example.com>")
+        .author("Oliver Bonham-Carter <obonhamcarter@allegheny.edu>")
         .about("Generates text using Ollama AI models")
         .arg_required_else_help(true)
+        .arg(
+            Arg::new("bighelp")
+                .short('b')
+                .long("bighelp")
+                .action(clap::ArgAction::SetTrue)
+                .help("Get a sample prompt to send to the model."),
+        )
         .arg(
             Arg::new("prompt")
                 .short('p')
@@ -107,7 +136,8 @@ fn parse_arguments() -> clap::ArgMatches {
             Arg::new("output")
                 .short('o')
                 .long("output")
-                .required(true)
+                .required(false)
+                .default_value("output")
                 .help("The file to save the output."),
         )
         .arg(
@@ -115,11 +145,10 @@ fn parse_arguments() -> clap::ArgMatches {
                 .short('m')
                 .long("model")
                 .required(false)
-
-// change the default model to "llama3.2" or whatever model you want
+                // change the default model to "llama3.2" or whatever model you want
                 // .default_value("mistral")
                 .default_value("llama3.2")
-                .help("The model to use for generation. Default model is llama3.2."),
+                .help("The model to use for generation."),
         )
         .arg(
             Arg::new("num_results")
@@ -146,7 +175,7 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
 
         // It may not be necessary to print the prompt again ...
         // println!("\t Prompt set: {}", my_prompt.bright_green().bold());
-        // let msg = format!("Prompt set: ").bright_yellow();
+        // let msg = format!("Prompt set: ").bright_yellow().bold();
         // println!("\t {}: {}", msg, my_prompt.bright_green().bold());
 
         colour_print("\t Prompt is set", "cyan");
@@ -161,7 +190,7 @@ async fn generate_response(
     prompt: &str,
     num_results: usize,
 ) -> Result<Vec<String>, String> {
-    let msg = format!("Prompt ").bright_yellow();
+    let msg = format!("Prompt ").bright_yellow().bold();
     println!("\t {}: {}", msg, prompt.bright_green().bold());
 
     // Convert model and prompt to String explicitly
@@ -188,17 +217,18 @@ async fn generate_response(
 
 // Handle the success case: save the response to a file
 async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str, model: &str) {
-    colour_print("Responses:", "yellow");
+    colour_print("\t Responses:", "yellow");
 
     let mut file = File::create(output_file)
         .unwrap_or_else(|_| panic!("Failed to create file {}", output_file));
 
     writeln!(file, "# Ollama Generation Result\n").unwrap();
-    writeln!(file, "## Model: {}\n",model).unwrap();
+    writeln!(file, "## Model: {}\n", model).unwrap();
     writeln!(file, "## Prompt\n\n{}", prompt).unwrap();
 
     for (i, response) in responses.iter().enumerate() {
-        colour_print(&response, "cyan");
+        let msg = format!("\t   {}",response);
+        colour_print(&msg, "cyan");
         writeln!(file, "## Response {}\n\n{}", i + 1, response).unwrap();
     }
 
@@ -206,14 +236,14 @@ async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str,
     println!("\t {}: {}", msg, output_file.bright_green().bold());
 }
 
-/// Handle the failure case: print an error message
+// Handle the failure case: print an error message
 fn handle_failure() {
     let error_msg = format!("\n\t Oh no, an error...\n\t Failed to generate response.\n\t Is the Ollama server running? \n\t Check that model has been pulled already?").bright_red().bold();
 
     eprintln!("{}", error_msg);
 }
 
-/// Get input from the user
+// Get input from the user
 fn get_input(my_message: &str) -> io::Result<String> {
     let mut input = String::new();
     colour_print(my_message, "yellow_noLineFeed");
@@ -222,7 +252,7 @@ fn get_input(my_message: &str) -> io::Result<String> {
     Ok(input.trim().to_string())
 }
 
-/// Print colored text to the console
+// Print colored text to the console
 fn colour_print(text: &str, colour: &str) {
     match colour {
         "flush_green" => {
@@ -276,4 +306,4 @@ fn colour_print(text: &str, colour: &str) {
 
 // Sample run Commands:
 // cargo run -- -p "Why is the sky blue?" -m mistral -o output.md --num_results 2
-// cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral" --num_results 1
+// cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "llama3.2" --num-results 2

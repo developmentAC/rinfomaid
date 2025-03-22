@@ -142,11 +142,12 @@ You can specify the model to use for generation with the `-m` argument. If not s
 cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
 ```
 
-Otherwise, you could use your own model, such as `llama3.2`:
+Otherwise, you could use your own model, such as `llama3.2`. In addition, since the one output to another file are likely to differ, you can specify the number of results to generate using the `--num_results` argument:
 
 ```bash
-cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "llama3.2"
+cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "llama3.2" --num_results 2
 ```
+
 
 ## Explanation of Code
 
