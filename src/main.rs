@@ -231,8 +231,11 @@ async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str,
     for (i, response) in responses.iter().enumerate() {
         let msg = format!("\t   {}", response);
         colour_print(&msg, "cyan");
-        writeln!(file, "## Response {}\n\n{}", i + 1, response).unwrap();
+        writeln!(file, "\n## Response {}\n{}", i + 1, response).unwrap();
     }
+
+    // Print a blank line at the end of the markdown file
+    writeln!(file, "").unwrap(); 
 
     // Print a message indicating that the responses are saved to the file
     let msg = format!("Responses saved to file: ").bright_yellow().bold();
