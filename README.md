@@ -68,8 +68,8 @@ This code was compiled using the Rustc version `1.85.0 (4d91de4e4 2025-02-17)`, 
    If you have not already cloned the repository, use the following command:
 
    ```bash
-   git clone https://github.com/yourusername/ollama-generator.git
-   cd ollama-generator
+   git clone git@github.com:developmentAC/rinfomaid.git
+   cd rinfomaid
    ```
 
 2. **Add Dependencies**:
