@@ -140,7 +140,7 @@ fn parse_arguments() -> clap::ArgMatches {
                 .short('o')
                 .long("output")
                 .required(false)
-                .default_value("output")
+                .default_value("output.md")
                 .help("The file to save the output."),
         )
         .arg(
@@ -311,5 +311,5 @@ fn colour_print(text: &str, colour: &str) {
 }
 
 // Sample run Commands:
-// cargo run -- -p "Why is the sky blue?" -m mistral -o output.md --num_results 2
+// cargo run -- -p "Why is the sky blue?" -m mistral -o output.md --num-results 2
 // cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "llama3.2" --num-results 2
