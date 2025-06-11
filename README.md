@@ -116,7 +116,7 @@ The program supports the following command-line arguments:
 
 ### Run with Prompt
 
-If you want to provide a prompt directly from the command line, use the `-p` argument:
+If you want to provide a prompt directly from the command line, use the `-p` (or `--prompt`) argument:
 
 ```bash
 cargo run -- -p "What is the capital of Pennsylvania?" -m mistral -o output.md
@@ -126,7 +126,7 @@ This will generate text based on the provided prompt and save the result in mark
 
 ### Run with Prompt File
 
-You can also provide a prompt from a file using the `-f` argument:
+You can also provide a prompt from a file using the `-f` (or `--prompt-file`) argument:
 
 ```bash
 cargo run -- --prompt-file "prompt.txt" --output "result.md" --model "mistral"
@@ -136,7 +136,7 @@ This will read the prompt from the file `prompt.txt`, generate a response, and s
 
 ### Run with Model
 
-You can specify the model to use for generation with the `-m` argument. If not specified, it defaults to `mistral`:
+You can specify the model to use for generation with the `-m` (or `--model`) argument. If not specified, it defaults to `mistral`:
 
 ```bash
 cargo run -- --prompt "What is the capital of France?" --output "result.md" --model "mistral"
