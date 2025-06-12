@@ -82,7 +82,7 @@ This code was compiled using the Rustc version `1.85.0 (4d91de4e4 2025-02-17)`, 
 
 3. ### Set Up Ollama and its Local Models
 
-   Ollama may be downloaded from [https://ollama.com/](https://ollama.com/). The below commands will install the models that Ollama will require to perform its functions. Note, a typical model for Ollama is about 4 GB in size. As there are manty diofferent models that you can experiment with at [https://ollama.com/search](https://ollama.com/search).
+   Ollama may be downloaded from [https://ollama.com/](https://ollama.com/). The below commands will install the models that Ollama will require to perform its functions. Note, a typical model for Ollama is about 4 GB in size. There are manty different models that you can experiment with at [https://ollama.com/search](https://ollama.com/search).
 
    ``` bash
    ollama pull mistral
