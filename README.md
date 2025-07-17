@@ -232,13 +232,13 @@ This command will:
 To query your local knowledge base instead of using Ollama directly:
 
 ```bash
-cargo run -- --use-local --prompt "What is a recycler?"
+cargo run -- --use-local --prompt "What is a recycler mower?"
 ```
 
 You can also specify an output file to save the RAG response:
 
 ```bash
-cargo run -- --use-local --prompt "What is a recycler?" --output "rag_response.md"
+cargo run -- --use-local --prompt "What is a recycler mower?" --output "rag_response.md"
 ```
 
 Features of local querying:
