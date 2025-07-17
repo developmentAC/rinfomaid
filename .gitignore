@@ -8,6 +8,7 @@
 target/
 0_out/
 promptfiles/
+agentic/
 
 # bash #
 ########
