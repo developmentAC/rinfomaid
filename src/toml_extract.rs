@@ -10,9 +10,9 @@ use toml::de::from_str;
 // Structure representing the package section of Cargo.toml
 #[derive(Debug, Deserialize)]
 struct Package {
-    name: String,     // Project name
-    version: String,  // Project version
-    edition: String,  // Rust edition (e.g., "2021")
+    name: String,    // Project name
+    version: String, // Project version
+    edition: String, // Rust edition (e.g., "2021")
 }
 
 // Structure representing the complete Cargo.toml file

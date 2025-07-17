@@ -11,8 +11,8 @@ use std::io::{self, Write};
 use std::path::Path;
 
 // Import custom modules for version extraction and RAG functionality
-mod toml_extract; // Extract and print the version information according to the toml file
-mod rag; // RAG system for local document processing
+mod rag;
+mod toml_extract; // Extract and print the version information according to the toml file // RAG system for local document processing
 
 // Function to display the ASCII art banner at program startup
 fn show_banner() {
@@ -85,7 +85,7 @@ async fn main() {
             let output_file = matches.get_one::<String>("output").unwrap();
             let output_dir = "0_out"; // Standard output directory
             let model = "llama3.2 (local RAG)"; // Indicate it's using local RAG
-            
+
             // Generate unique output file path
             let output_file_with_path = generate_unique_output_path(output_dir, output_file);
             let msg = format!("Output filepath ").bright_yellow().bold();
@@ -94,7 +94,7 @@ async fn main() {
                 msg,
                 output_file_with_path.bright_green().bold()
             );
-            
+
             // Save response to file and display
             println!("{}", response);
             handle_success_local_rag(vec![response], &output_file_with_path, &prompt, model).await;
@@ -140,29 +140,47 @@ async fn main() {
 // Display comprehensive help message with examples for all major features
 fn get_big_help() {
     // Standard AI generation examples
-    let msg = format!("\n\t 🤖 Standard AI Generation:").bright_cyan().bold();
+    let msg = format!("\n\t 🤖 Standard AI Generation:")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
     let msg = format!("\t cargo run -- --prompt \"What is the capital of France?\"  --output \"result.md\"  --model \"llama3.2\"  --num-results 2").bright_cyan().bold();
     println!("{}", msg);
-    
+
     // RAG (Retrieval-Augmented Generation) command examples
-    let msg = format!("\n\t 📚 RAG (Retrieval-Augmented Generation) Commands:").bright_cyan().bold();
+    let msg = format!("\n\t 📚 RAG (Retrieval-Augmented Generation) Commands:")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
-    let msg = format!("\t cargo run -- --rag build                    # Build local model from data/ directory").bright_cyan().bold();
+    let msg = format!(
+        "\t cargo run -- --rag build                    # Build local model from data/ directory"
+    )
+    .bright_cyan()
+    .bold();
     println!("{}", msg);
-    let msg = format!("\t cargo run -- --rag status                   # Check local model status").bright_cyan().bold();
+    let msg = format!("\t cargo run -- --rag status                   # Check local model status")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
-    let msg = format!("\t cargo run -- --rag remove                   # Remove local model").bright_cyan().bold();
+    let msg = format!("\t cargo run -- --rag remove                   # Remove local model")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
-    
+
     // Local knowledge base querying examples
-    let msg = format!("\n\t 🔍 Using Local Knowledge Base:").bright_cyan().bold();
+    let msg = format!("\n\t 🔍 Using Local Knowledge Base:")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
-    let msg = format!("\t cargo run -- --use-local --prompt \"Tell me about the recycler manual\"").bright_cyan().bold();
+    let msg = format!("\t cargo run -- --use-local --prompt \"Tell me about the recycler manual\"")
+        .bright_cyan()
+        .bold();
     println!("{}", msg);
-    
+
     // Supported file types information
-    let msg = format!("\n\t 📁 Supported file types in data/ directory: PDF, TXT, MD").bright_yellow().bold();
+    let msg = format!("\n\t 📁 Supported file types in data/ directory: PDF, TXT, MD")
+        .bright_yellow()
+        .bold();
     println!("{}", msg);
 }
 
@@ -242,13 +260,13 @@ fn get_prompt(matches: &clap::ArgMatches) -> String {
     // Check if prompt was provided directly via command line
     if let Some(prompt) = matches.get_one::<String>("prompt") {
         prompt.to_string()
-    } 
+    }
     // Check if prompt was provided via file
     else if let Some(prompt_file) = matches.get_one::<String>("prompt_file") {
         // Attempt to read the prompt from the specified file
         std::fs::read_to_string(prompt_file)
             .unwrap_or_else(|_| "\t Failed to read prompt file.".to_string())
-    } 
+    }
     // If no prompt source specified, prompt user for interactive input
     else {
         let my_message = format!("\t Enter the prompt : ");
@@ -326,13 +344,13 @@ async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str,
         // Display response in cyan color to terminal
         let msg = format!("\t   {}", response);
         colour_print(&msg, "cyan");
-        
+
         // Write response to file with numbered sections
         writeln!(file, "\n## Response {}\n{}", i + 1, response).unwrap();
     }
 
     // Add a blank line at the end of the markdown file for proper formatting
-    writeln!(file, "").unwrap(); 
+    writeln!(file, "").unwrap();
 
     // Confirm successful file save to user
     let msg = format!("Responses saved to file: ").bright_yellow().bold();
@@ -345,7 +363,12 @@ async fn handle_success(responses: Vec<String>, output_file: &str, prompt: &str,
 //   - output_file: Path where the results should be saved
 //   - prompt: Original prompt that was sent to the model
 //   - model: Name of the model that generated the responses
-async fn handle_success_local_rag(responses: Vec<String>, output_file: &str, prompt: &str, model: &str) {
+async fn handle_success_local_rag(
+    responses: Vec<String>,
+    output_file: &str,
+    prompt: &str,
+    model: &str,
+) {
     // Create the output file at the specified path
     let mut file = File::create(output_file)
         .unwrap_or_else(|_| panic!("Failed to create file {}", output_file));
@@ -362,10 +385,12 @@ async fn handle_success_local_rag(responses: Vec<String>, output_file: &str, pro
     }
 
     // Add a blank line at the end of the markdown file for proper formatting
-    writeln!(file, "").unwrap(); 
+    writeln!(file, "").unwrap();
 
     // Confirm successful file save to user
-    let msg = format!("Local RAG response saved to file: ").bright_yellow().bold();
+    let msg = format!("Local RAG response saved to file: ")
+        .bright_yellow()
+        .bold();
     println!("\t {}: {}", msg, output_file.bright_green().bold());
 }
 
@@ -385,14 +410,14 @@ fn handle_failure() {
 // Returns: Result containing the user's input string or IO error
 fn get_input(my_message: &str) -> io::Result<String> {
     let mut input = String::new();
-    
+
     // Display the prompt message without a newline
     colour_print(my_message, "yellow_noLineFeed");
     io::stdout().flush()?; // Ensure message is displayed before reading input
-    
+
     // Read user input from stdin
     io::stdin().read_line(&mut input)?;
-    
+
     // Return trimmed input (removes trailing newline)
     Ok(input.trim().to_string())
 }
@@ -401,7 +426,7 @@ fn get_input(my_message: &str) -> io::Result<String> {
 // Parameters:
 //   - text: The text to print
 //   - colour: Color/formatting specification string
-// Supported colors: flush_green, green, green_noLineFeed, red, cyan, purple, 
+// Supported colors: flush_green, green, green_noLineFeed, red, cyan, purple,
 //                   purple_noLineFeed, blue, yellow, yellow_noLineFeed
 fn colour_print(text: &str, colour: &str) {
     match colour {
@@ -473,7 +498,7 @@ fn colour_print(text: &str, colour: &str) {
 async fn handle_rag_command(command: &str) {
     // Initialize RAG system with agentic directory for model storage and data directory for source files
     let mut rag_system = rag::RagSystem::new("agentic", "data");
-    
+
     match command {
         // Build local knowledge base from documents in data/ directory
         "build" => {
@@ -493,17 +518,29 @@ async fn handle_rag_command(command: &str) {
                 // Attempt to load the model and display statistics
                 if let Ok(true) = rag_system.load_model() {
                     let (doc_count, chunk_count) = rag_system.get_stats();
-                    colour_print(&format!("\t Local model is available with {} documents and {} chunks", doc_count, chunk_count), "green");
+                    colour_print(
+                        &format!(
+                            "\t Local model is available with {} documents and {} chunks",
+                            doc_count, chunk_count
+                        ),
+                        "green",
+                    );
                 } else {
                     colour_print("\t Local model exists but failed to load", "red");
                 }
             } else {
-                colour_print("\t No local model available. Use 'cargo run -- --rag build' to create one.", "yellow");
+                colour_print(
+                    "\t No local model available. Use 'cargo run -- --rag build' to create one.",
+                    "yellow",
+                );
             }
         }
         // Handle invalid commands
         _ => {
-            colour_print("\t Invalid RAG command. Use 'build', 'remove', or 'status'.", "red");
+            colour_print(
+                "\t Invalid RAG command. Use 'build', 'remove', or 'status'.",
+                "red",
+            );
         }
     }
 }
@@ -515,53 +552,68 @@ async fn handle_rag_command(command: &str) {
 async fn handle_local_rag_query(query: &str) -> Result<String, String> {
     // Initialize RAG system with standard directories
     let mut rag_system = rag::RagSystem::new("agentic", "data");
-    
+
     // Check if a local model exists
     if !rag_system.is_model_available() {
-        return Err("No local model available. Use 'cargo run -- --rag build' to create one.".to_string());
+        return Err(
+            "No local model available. Use 'cargo run -- --rag build' to create one.".to_string(),
+        );
     }
-    
+
     // Attempt to load the local model
     if let Err(e) = rag_system.load_model() {
         return Err(format!("Failed to load local model: {}", e));
     }
-    
+
     // Inform user that local search is being performed
     colour_print("\t Searching local knowledge base...", "cyan");
-    
+
     // Search for relevant documents using TF-IDF scoring (top 3 results)
     let search_results = rag_system.search_local(query, 3);
-    
+
     // Check if any relevant documents were found
     if search_results.is_empty() {
         colour_print("\t No relevant information found in local model.", "yellow");
-        colour_print("\t The request is outside the local model's capabilities.", "yellow");
+        colour_print(
+            "\t The request is outside the local model's capabilities.",
+            "yellow",
+        );
         colour_print("\t Falling back to Ollama model...", "cyan");
         return Err("No relevant local information found".to_string());
     }
-    
+
     // Check if the best match meets minimum relevance threshold
-    let best_score = search_results.first().map(|(score, _)| *score).unwrap_or(0.0);
-    if best_score < 0.001 { // Minimum threshold for relevance
-        colour_print("\t The request is outside the local model's capabilities.", "yellow");
+    let best_score = search_results
+        .first()
+        .map(|(score, _)| *score)
+        .unwrap_or(0.0);
+    if best_score < 0.001 {
+        // Minimum threshold for relevance
+        colour_print(
+            "\t The request is outside the local model's capabilities.",
+            "yellow",
+        );
         colour_print("\t Falling back to Ollama model...", "cyan");
         return Err("Query outside local model capabilities".to_string());
     }
-    
+
     // Generate context from the most relevant search results
     let context = generate_context_from_search_results(&search_results, &rag_system);
-    
+
     // Create enhanced prompt that includes local context
     let enhanced_prompt = format!(
         "Based on the following context from local documents, please answer the question:\n\nContext:\n{}\n\nQuestion: {}\n\nAnswer:",
         context, query
     );
-    
+
     // Use Ollama to generate a response using the enhanced prompt with local context
     let ollama = Ollama::new("http://localhost".to_string(), 11434);
     let model = "llama3.2".to_string();
-    
-    match ollama.generate(GenerationRequest::new(model, enhanced_prompt)).await {
+
+    match ollama
+        .generate(GenerationRequest::new(model, enhanced_prompt))
+        .await
+    {
         Ok(response) => {
             // Format successful response with source attribution
             colour_print("\t Response generated using local knowledge base:", "green");
@@ -572,7 +624,7 @@ async fn handle_local_rag_query(query: &str) -> Result<String, String> {
             );
             Ok(formatted_response)
         }
-        Err(e) => Err(format!("Failed to generate response: {}", e))
+        Err(e) => Err(format!("Failed to generate response: {}", e)),
     }
 }
 
@@ -586,7 +638,7 @@ fn generate_context_from_search_results(
     rag_system: &rag::RagSystem,
 ) -> String {
     let mut context = String::new();
-    
+
     // Process up to 3 most relevant search results
     for (score, chunk) in search_results.iter().take(3) {
         // Get the document title for each chunk
@@ -597,7 +649,7 @@ fn generate_context_from_search_results(
             ));
         }
     }
-    
+
     context
 }
 
@@ -611,7 +663,7 @@ fn format_sources(
     rag_system: &rag::RagSystem,
 ) -> String {
     let mut sources = String::new();
-    
+
     // Format up to 3 sources with numbering and relevance scores
     for (i, (score, chunk)) in search_results.iter().take(3).enumerate() {
         if let Some(doc) = rag_system.get_document_by_id(&chunk.document_id) {
@@ -623,7 +675,7 @@ fn format_sources(
             ));
         }
     }
-    
+
     sources
 }
 
@@ -643,7 +695,7 @@ fn generate_unique_output_path(output_dir: &str, output_file: &str) -> String {
 
     // Construct the base file path
     let base_path = format!("{}/{}", output_dir, output_file);
-    
+
     // If the file doesn't exist, return the original path
     if !Path::new(&base_path).exists() {
         return base_path;
@@ -651,9 +703,17 @@ fn generate_unique_output_path(output_dir: &str, output_file: &str) -> String {
 
     // Extract the filename stem (without extension) and extension
     let path = Path::new(output_file);
-    let stem = path.file_stem().unwrap_or_default().to_str().unwrap_or("output");
-    let extension = path.extension().unwrap_or_default().to_str().unwrap_or("md");
-    
+    let stem = path
+        .file_stem()
+        .unwrap_or_default()
+        .to_str()
+        .unwrap_or("output");
+    let extension = path
+        .extension()
+        .unwrap_or_default()
+        .to_str()
+        .unwrap_or("md");
+
     // Generate numbered variations until we find one that doesn't exist
     let mut counter = 1;
     loop {
@@ -663,19 +723,21 @@ fn generate_unique_output_path(output_dir: &str, output_file: &str) -> String {
         } else {
             format!("{}_{}.{}", stem, counter, extension)
         };
-        
+
         let new_path = format!("{}/{}", output_dir, new_filename);
-        
+
         // Check if this numbered variation is available
         if !Path::new(&new_path).exists() {
             return new_path;
         }
-        
+
         counter += 1;
-        
+
         // Safety check to prevent infinite loop (though very unlikely)
         if counter > 9999 {
-            eprintln!("Error: Too many output files with similar names. Please clean up the output directory.");
+            eprintln!(
+                "Error: Too many output files with similar names. Please clean up the output directory."
+            );
             std::process::exit(1);
         }
     }
