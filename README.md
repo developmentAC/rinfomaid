@@ -1,4 +1,4 @@
-# Rinfomaid:  A textual AI application written in Rust
+# Rinfomaid:  A textual AI application, markdown archival and RAG document query system written in Rust. Neat-o!, right?
 
 ![logo](graphics/rinfomaid_logo.png)
 
@@ -20,7 +20,7 @@ This project is a learning tool for how to programming nifty AI stuff in Rust. C
 
 ## Table of Contents
 
-- [Rinfomaid:  A textual AI application written in Rust](#rinfomaid--a-textual-ai-application-written-in-rust)
+- [Rinfomaid:  A textual AI application, markdown archival and RAG document query system written in Rust. Neat-o!, right?](#rinfomaid--a-textual-ai-application-markdown-archival-and-rag-document-query-system-written-in-rust-neat-o-right)
   - [Table of Contents](#table-of-contents)
   - [Dependencies](#dependencies)
   - [Rust Compiler Version](#rust-compiler-version)
