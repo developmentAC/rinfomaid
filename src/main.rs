@@ -172,7 +172,7 @@ fn get_big_help() {
         .bright_cyan()
         .bold();
     println!("{}", msg);
-    let msg = format!("\t cargo run -- --use-local --prompt \"Tell me about the recycler manual\"")
+    let msg = format!("\t cargo run -- --use-local --prompt \"Tell me about AstroBill\"")
         .bright_cyan()
         .bold();
     println!("{}", msg);
