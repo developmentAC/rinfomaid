@@ -9,6 +9,7 @@ target/
 0_out/
 promptfiles/
 agentic/
+data/
 
 # bash #
 ########
