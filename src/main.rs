@@ -78,6 +78,10 @@ async fn main() {
     // Retrieve the user's prompt from various sources (CLI, file, or interactive input)
     let prompt = get_prompt(&matches);
 
+// print the prompt that will be sent to the model
+    let msg = format!("Prompt ").bright_yellow().bold();
+    println!("\t {}: {}\n", msg, prompt.bright_green().bold());
+
     // If using local RAG, try to answer with local model first
     if use_local {
         if let Ok(response) = handle_local_rag_query(&prompt).await {
