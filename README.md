@@ -18,6 +18,8 @@ The **RinfoMaid** is a Rust command-line tool that interacts with the Ollama API
 **Why did you work on this project?**
 This project is a learning tool for how to programming nifty AI stuff in Rust. Cool, right?
 
+![logo](graphics/rinfomaid_screenshot.png)
+
 ## Table of Contents
 
 - [Rinfomaid:  A textual AI application, markdown archival and RAG document query system written in Rust. Neat-o!, right?](#rinfomaid--a-textual-ai-application-markdown-archival-and-rag-document-query-system-written-in-rust-neat-o-right)
@@ -45,7 +47,7 @@ This project is a learning tool for how to programming nifty AI stuff in Rust. C
       - [RAG Functions](#rag-functions)
       - [Search Algorithm](#search-algorithm)
       - [File Structure](#file-structure)
-  - [Concluding Thoughts](#concluding-thoughts)
+  - [Notable Features](#notable-features)
   - [Special Notes](#special-notes)
     - [Definitions of Terms](#definitions-of-terms)
     - [Output File Handling](#output-file-handling)
