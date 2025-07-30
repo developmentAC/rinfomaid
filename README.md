@@ -363,7 +363,7 @@ agentic/
 └── word_index.json   # Inverted index for fast search
 ```
 
-## Concluding Thoughts
+## Notable Features
 
 This project demonstrates how to interact with an AI model to generate text using the Ollama API, enhanced with powerful RAG (Retrieval-Augmented Generation) capabilities. The tool is flexible, allowing users to:
 
